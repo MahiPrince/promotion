@@ -16,7 +16,6 @@
     "@superhq/webmotion": "^0.18.2",
     "esbuild": "^0.25.10",
     "express": "^5.1.0",
-    "multer": "^2.0.2",
-    "openai": "^5.23.2"
+    "multer": "^2.0.2"
   }
 }
