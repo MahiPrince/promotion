@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: promotion
+    runtime: node
+    plan: starter
+    region: singapore
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: DATA_ROOT
+        value: /var/data/promotion
+    disk:
+      name: promotion-data
+      mountPath: /var/data
+      sizeGB: 10
