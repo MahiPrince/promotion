@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: promotion
+    name: promotion-v0
     runtime: node
     plan: starter
     region: singapore
@@ -10,6 +10,8 @@ services:
     envVars:
       - key: DATA_ROOT
         value: /var/data/promotion
+      - key: OPENAI_MODEL
+        value: gpt-5.6-terra
     disk:
       name: promotion-data
       mountPath: /var/data
