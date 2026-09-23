@@ -1,18 +1,22 @@
 {
-  "name": "promotion-v0",
-  "version": "0.1.0",
+  "name": "promotion-ai-filmmaker",
+  "version": "1.0.0",
   "private": true,
-  "description": "Prompt-to-product-video prototype",
+  "description": "AI-directed product films from prompts and product material",
   "main": "server.js",
   "scripts": {
+    "build": "esbuild src/app.js --bundle --format=esm --platform=browser --target=es2022 --outfile=public/app.js --minify",
+    "postinstall": "npm run build",
     "start": "node server.js"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
+    "@superhq/webmotion": "^0.18.2",
+    "esbuild": "^0.25.10",
     "express": "^5.1.0",
-    "ffmpeg-static": "^5.2.0",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "openai": "^5.23.2"
   }
 }
