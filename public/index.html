@@ -110,7 +110,7 @@
   }
   async function drawScene(scene,t,globalTime){
     bg(globalTime);
-    var a=Math.min(1,t/.55), out=Math.min(1,(1-t)/(scene.duration*.12)); if(!isFinite(out))out=1; var alpha=Math.max(0,Math.min(a,out));
+    var a=Math.min(1,t/.55), out=Math.min(1,(scene.duration-t)/(scene.duration*.12)); if(!isFinite(out))out=1; var alpha=Math.max(0,Math.min(a,out));
     ctx.globalAlpha=alpha;
     if(scene.type==="title"||scene.type==="end"||scene.type==="statement"){
       ctx.fillStyle="#a9b0bd";ctx.font="600 14px Inter,Arial";ctx.fillText(scene.eyebrow||"PROMOTION",92,180);
