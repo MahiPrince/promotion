@@ -1,37 +1,50 @@
-# Promotion V0
+# Promotion — AI Product Filmmaker
 
-A deliberately small prompt-to-product-film prototype.
+Promotion turns a creative brief plus product material into a directed, deterministic product film.
 
-## Current flow
+## V1 flow
 
-1. Anonymous browser session (no login)
-2. Upload product screenshots / supporting material
-3. Enter a prompt and duration
-4. Server builds a deterministic storyboard
-5. Browser renders the storyboard into a video stream
-6. Render server converts WebM to H.264 MP4 using ffmpeg-static
-7. Output is stored under the anonymous session and survives refreshes when /var/data is persistent
+1. Anonymous persistent workspace (no login)
+2. Upload screenshots, PDFs, decks, docs, or spreadsheets
+3. OpenAI reads the material using vision and file inputs
+4. An AI creative director produces a strict film specification
+5. Promotion renders that specification deterministically with a locally bundled WebMotion core
+6. Chromium WebCodecs exports H.264 MP4 without real-time screen recording
+7. The MP4 and project specification persist on the Render disk
+8. The user can ask for a targeted revision and render a new cut
 
-## Storage
+## Infrastructure
 
-Set:
+- GitHub — source
+- Render — Node service + 10 GB persistent disk
+- OpenAI API — material understanding and creative direction
+- No login service
+- No external database
+- No object-storage service
+- No render farm
+- No generative-video API
 
-DATA_ROOT=/var/data/promotion
+## Environment variables
 
-Expected persistent disk mount:
+- `OPENAI_API_KEY` — required
+- `OPENAI_MODEL` — optional, defaults to `gpt-5.6-terra`
+- `DATA_ROOT` — `/var/data/promotion` on Render
 
-/var/data
+## Persistent layout
 
-Recommended initial disk size: 10 GB.
+```
+/var/data/promotion/
+  sessions/
+    sess_.../
+      session.json
+      assets.json
+      uploads/
+      projects/
+      outputs/
+```
 
-The included render.yaml declares this disk for Render Blueprint deployment.
+## Rendering
 
-## V0 limitations
+The browser bundle includes `@superhq/webmotion` and uses deterministic frame rendering plus WebCodecs MP4 export. This replaces the V0 real-time MediaRecorder -> WebM -> FFmpeg pipeline.
 
-- Visual screenshots are used directly in scenes.
-- PDF/PPT text understanding is not implemented yet.
-- No external AI APIs are used.
-- No authentication or billing.
-- No audio yet.
-
-The purpose of V0 is to validate the complete hosted prompt + material -> rendered video loop before adding deeper document intelligence.
+WebMotion is MIT licensed. See `THIRD_PARTY_NOTICES.md`.
