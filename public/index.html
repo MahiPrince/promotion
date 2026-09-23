@@ -3,173 +3,145 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Promotion — Product films from prompts</title>
+  <meta name="theme-color" content="#07080a">
+  <title>Promotion — AI Product Filmmaker</title>
   <style>
-    :root{--bg:#090a0d;--panel:#111319;--line:#242833;--text:#f4f6f8;--muted:#89909f;--accent:#f4f6f8}
-    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0,#1a1d25 0,#090a0d 38%);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-    .shell{max-width:1180px;margin:0 auto;padding:28px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px}.brand{font-weight:760;letter-spacing:-.03em;font-size:20px}.pill{border:1px solid var(--line);background:#0d0f14;border-radius:999px;padding:7px 11px;color:var(--muted);font-size:12px}
-    .grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);gap:22px}.card{background:rgba(17,19,25,.82);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 24px 80px rgba(0,0,0,.22);backdrop-filter:blur(18px)}
-    h1{font-size:42px;line-height:1.02;letter-spacing:-.055em;margin:4px 0 12px;max-width:650px} .lede{color:var(--muted);font-size:16px;margin:0 0 24px;max-width:620px}
-    label{display:block;font-size:12px;color:#b9bec8;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.08em} textarea{width:100%;min-height:145px;resize:vertical;background:#0b0d12;border:1px solid var(--line);color:white;border-radius:16px;padding:16px;font:inherit;outline:none} textarea:focus{border-color:#4a5160}
-    .upload{border:1px dashed #363b47;border-radius:16px;padding:18px;background:#0b0d12}.upload input{width:100%;color:var(--muted)}.files{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.file{font-size:12px;border:1px solid var(--line);padding:6px 9px;border-radius:999px;color:#cbd0da;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .options{display:flex;gap:8px}.opt{border:1px solid var(--line);background:#0b0d12;color:#c5cad4;border-radius:12px;padding:9px 13px;cursor:pointer}.opt.active{background:#f4f6f8;color:#090a0d;border-color:#f4f6f8}.generate{margin-top:22px;width:100%;border:0;border-radius:14px;background:#f4f6f8;color:#090a0d;font-weight:760;padding:14px 18px;cursor:pointer}.generate:disabled{opacity:.45;cursor:not-allowed}
-    .stage{aspect-ratio:16/9;background:#050608;border-radius:18px;border:1px solid var(--line);overflow:hidden;position:relative}.stage canvas,.stage video{width:100%;height:100%;display:block}.empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#646b79;padding:32px}.empty b{display:block;color:#b5bbc6;margin-bottom:4px}
-    .status{margin-top:14px;display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px}.bar{height:5px;background:#1d2028;border-radius:999px;overflow:hidden;margin-top:12px}.bar span{display:block;height:100%;width:0;background:#f4f6f8;transition:width .15s linear}.history{margin-top:18px}.render{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:11px 0}.render a{color:white;text-decoration:none;font-size:13px}.render small{color:var(--muted)}
-    .note{margin-top:14px;color:#6f7685;font-size:12px}.hidden{display:none}
-    @media(max-width:850px){.grid{grid-template-columns:1fr}.shell{padding:18px}h1{font-size:34px}}
+    :root{--bg:#07080a;--panel:#0e1015;--line:#222631;--text:#f6f7f9;--muted:#8b93a3;--accent:#8e9bff}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{background:radial-gradient(circle at 18% -10%,rgba(108,120,255,.14),transparent 34%),radial-gradient(circle at 95% 15%,rgba(70,88,180,.08),transparent 26%),#07080a}
+    button,input,textarea{font:inherit}
+    .shell{max-width:1420px;margin:0 auto;padding:22px 26px 42px}
+    .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .brand{font-size:19px;font-weight:760;letter-spacing:-.035em}.brand span{color:#697182;font-weight:620}
+    .session{font-size:11px;color:#8b93a3;border:1px solid var(--line);padding:7px 10px;border-radius:999px;background:#0b0d11}
+    .layout{display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px;align-items:start}
+    .panel{background:rgba(14,16,21,.88);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.24);overflow:hidden}
+    .inputPanel{padding:22px;position:sticky;top:18px}
+    .eyebrow{font-size:11px;color:#7d8595;text-transform:uppercase;letter-spacing:.13em;margin-bottom:10px}
+    h1{font-size:34px;line-height:1.03;letter-spacing:-.05em;margin:0 0 10px}
+    .lead{font-size:14px;color:var(--muted);margin:0 0 21px;line-height:1.55}
+    label{display:block;color:#aeb5c2;font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin:17px 0 8px}
+    textarea,.revisionInput{width:100%;border:1px solid var(--line);background:#090b0f;color:#f6f7f9;border-radius:14px;padding:13px;outline:none}
+    textarea{height:128px;resize:vertical;line-height:1.5}.revisionInput{height:44px}
+    textarea:focus,.revisionInput:focus{border-color:#4f586d}
+    .uploadBox{border:1px dashed #343945;background:#090b0f;border-radius:14px;padding:14px}
+    .uploadRow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .uploadBtn{display:inline-flex;align-items:center;gap:7px;border:1px solid #2d323d;border-radius:10px;padding:8px 10px;color:#e2e5eb;background:#11141a;cursor:pointer;font-size:12px}
+    .uploadBtn input{display:none}.hint{font-size:11px;color:#626a79}
+    .assets{display:grid;gap:7px;margin-top:11px;max-height:190px;overflow:auto}
+    .asset{display:flex;align-items:center;gap:9px;border:1px solid #1c2029;border-radius:10px;padding:7px;background:#0c0e13}
+    .thumb{width:34px;height:28px;border-radius:6px;object-fit:cover;background:#161a22}
+    .docIcon{width:34px;height:28px;border-radius:6px;background:#171a22;display:grid;place-items:center;color:#7d8596;font-size:9px}
+    .assetMeta{min-width:0;flex:1}.assetName{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.assetSize{font-size:9px;color:#616979}
+    .remove{border:0;background:transparent;color:#5e6675;cursor:pointer;font-size:15px;padding:3px}.remove:hover{color:#c5cad4}
+    .duration{display:flex;gap:6px}.duration button{flex:1;border:1px solid var(--line);background:#0a0c10;color:#9ba3b2;border-radius:10px;padding:8px;cursor:pointer;font-size:12px}.duration button.active{background:#f4f6f8;color:#090a0d;border-color:#f4f6f8}
+    .primary{width:100%;border:0;border-radius:12px;background:#f4f6f8;color:#07080a;font-weight:760;padding:12px 14px;margin-top:18px;cursor:pointer;transition:.18s}.primary:hover{transform:translateY(-1px)}.primary:disabled{opacity:.42;cursor:not-allowed;transform:none}
+    .privacy{font-size:10px;color:#5f6776;margin-top:10px;line-height:1.45}
+    .workspace{min-width:0}.stagePanel{padding:16px}
+    .stageHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.stageTitle{font-size:13px;font-weight:650}.stageMeta{font-size:10px;color:#6d7584}
+    .stage{aspect-ratio:16/9;background:#030405;border:1px solid #1c2028;border-radius:14px;overflow:hidden;position:relative;display:grid;place-items:center}
+    .stage w-player,.stage w-composition{width:100%;height:100%}
+    .empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#626a79;padding:30px;background:radial-gradient(circle at 50% 35%,#141821,#050607 65%)}.empty b{display:block;color:#c4c9d2;font-size:14px;margin-bottom:4px}
+    .statusWrap{margin-top:12px}.status{display:flex;justify-content:space-between;font-size:10px;color:#7c8494}.track{height:4px;background:#191c23;border-radius:999px;margin-top:8px;overflow:hidden}.track span{display:block;height:100%;width:0;background:#dfe3ea;transition:width .18s}
+    .sections{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:18px;margin-top:18px}
+    .story,.side{padding:18px}.sectionTitle{font-size:12px;font-weight:680;margin:0 0 12px}.sectionNote{font-size:10px;color:#697182;margin-top:-6px;margin-bottom:12px}
+    .sceneList{display:grid;gap:8px}.scene{display:grid;grid-template-columns:38px 1fr auto;gap:11px;align-items:center;border:1px solid #1e222b;background:#0b0d12;border-radius:12px;padding:10px}
+    .sceneNo{width:38px;height:38px;border-radius:9px;background:#161922;display:grid;place-items:center;font-size:10px;color:#929aaa}.sceneText{min-width:0}.sceneHead{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sceneSub{font-size:9px;color:#6d7585;margin-top:2px}.sceneDur{font-size:10px;color:#818999}
+    .summary{color:#a4abb8;font-size:12px;line-height:1.55;margin-bottom:14px}
+    .tagRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}.tag{font-size:9px;color:#aeb5c1;border:1px solid #272c36;border-radius:999px;padding:5px 7px}
+    .revision{border-top:1px solid #1d2129;padding-top:15px;margin-top:15px}.revisionRow{display:flex;gap:7px}.revisionRow button{border:1px solid #2b303a;background:#171a21;color:#dce0e7;border-radius:10px;padding:0 11px;cursor:pointer;font-size:11px}
+    .history{margin-top:18px;border-top:1px solid #1c2028;padding-top:14px}.render{display:flex;justify-content:space-between;align-items:center;padding:7px 0}.render a{font-size:10px;color:#d8dce3;text-decoration:none}.render span{font-size:9px;color:#616978}
+    .download{display:none;margin-top:10px;width:100%;text-align:center;text-decoration:none;background:#171a21;border:1px solid #2b303a;color:#f1f3f5;border-radius:10px;padding:9px;font-size:11px}.download.show{display:block}
+    @media(max-width:1040px){.layout{grid-template-columns:1fr}.inputPanel{position:relative;top:auto}.sections{grid-template-columns:1fr}}
+    @media(max-width:650px){.shell{padding:14px}.inputPanel{padding:17px}h1{font-size:29px}.sections{gap:12px}.stagePanel{padding:10px}}
   </style>
 </head>
 <body>
-<div class="shell">
-  <div class="top"><div class="brand">Promotion <span style="color:#616978">/ V0</span></div><div class="pill" id="sessionPill">Anonymous workspace</div></div>
-  <div class="grid">
-    <section class="card">
-      <h1>Turn product material into a motion film.</h1>
-      <p class="lede">This first build keeps your workspace alive anonymously, turns uploaded visual material into a storyboard, renders it in your browser, and saves the result back to the server.</p>
-      <label for="prompt">Describe the video</label>
-      <textarea id="prompt" placeholder="Create a premium 20-second product launch film. Dark, minimal, confident. Introduce the product, move through the main screens, and end on a strong brand statement."></textarea>
-      <label>Product material</label>
-      <div class="upload">
-        <input id="files" type="file" multiple accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.ppt,.pptx,.txt">
-        <div class="files" id="fileList"></div>
-      </div>
-      <label>Duration</label>
-      <div class="options" id="durations"><button class="opt" data-value="15">15 sec</button><button class="opt active" data-value="20">20 sec</button><button class="opt" data-value="30">30 sec</button></div>
-      <button class="generate" id="generate">Generate film</button>
-      <div class="note">No login. Your browser receives an anonymous session cookie and this prototype stores project files under that session.</div>
-    </section>
+  <div class="shell">
+    <header class="top">
+      <div class="brand">Promotion <span>/ AI filmmaker</span></div>
+      <div class="session" id="sessionPill">Anonymous workspace</div>
+    </header>
 
-    <section class="card">
-      <div class="stage" id="stage">
-        <canvas id="canvas" width="1280" height="720" class="hidden"></canvas>
-        <video id="video" controls playsinline class="hidden"></video>
-        <div class="empty" id="empty"><div><b>Your film will appear here</b>Upload a few product screenshots and write a prompt.</div></div>
-      </div>
-      <div class="status"><span id="statusText">Ready</span><span id="progressText">0%</span></div>
-      <div class="bar"><span id="bar"></span></div>
-      <div class="history">
-        <label style="margin-top:18px">Previous renders</label>
-        <div id="historyList"><div style="color:#626a78;font-size:13px">Nothing rendered in this session yet.</div></div>
-      </div>
-    </section>
+    <div class="layout">
+      <aside class="panel inputPanel">
+        <div class="eyebrow">Creative brief</div>
+        <h1>Make the product feel inevitable.</h1>
+        <p class="lead">Give Promotion the product, the context and the intent. The AI director decides the story; the motion engine makes it frame-accurate.</p>
+
+        <label for="prompt">What should this film do?</label>
+        <textarea id="prompt" placeholder="Create a premium launch film for our product. Show why it matters, use the strongest product screens, keep the copy minimal, and make the reveal feel confident."></textarea>
+
+        <label>Material</label>
+        <div class="uploadBox">
+          <div class="uploadRow">
+            <label class="uploadBtn" style="margin:0;text-transform:none;letter-spacing:0">
+              + Add material
+              <input id="fileInput" type="file" multiple accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.ppt,.pptx,.doc,.docx,.txt,.md,.csv,.xls,.xlsx">
+            </label>
+            <span class="hint">screens · PDF · deck · docs</span>
+          </div>
+          <div class="assets" id="assetList"></div>
+        </div>
+
+        <label>Length</label>
+        <div class="duration" id="durationPicker">
+          <button data-duration="15">15 sec</button>
+          <button data-duration="20" class="active">20 sec</button>
+          <button data-duration="30">30 sec</button>
+          <button data-duration="45">45 sec</button>
+        </div>
+
+        <button class="primary" id="generateBtn">Direct my film</button>
+        <div class="privacy">No login. Your anonymous workspace, materials and renders persist on this Render disk. Product material is sent to OpenAI only when you generate or revise a film.</div>
+      </aside>
+
+      <main class="workspace">
+        <section class="panel stagePanel">
+          <div class="stageHeader">
+            <div class="stageTitle" id="filmTitle">Film preview</div>
+            <div class="stageMeta" id="stageMeta">1280 × 720 · 30 fps</div>
+          </div>
+          <div class="stage" id="stage">
+            <div class="empty" id="emptyState"><div><b>Your directed film appears here.</b>Add material, write a brief, then let the director build the cut.</div></div>
+          </div>
+          <div class="statusWrap">
+            <div class="status"><span id="statusText">Ready</span><span id="statusPct">0%</span></div>
+            <div class="track"><span id="progressBar"></span></div>
+          </div>
+        </section>
+
+        <div class="sections">
+          <section class="panel story">
+            <h2 class="sectionTitle">Storyboard</h2>
+            <div class="sectionNote">Generated from the actual material you supplied.</div>
+            <div class="sceneList" id="sceneList"><div class="sectionNote">No film directed yet.</div></div>
+          </section>
+
+          <aside class="panel side">
+            <h2 class="sectionTitle">Direction</h2>
+            <div class="summary" id="summary">The creative rationale will appear here.</div>
+            <div class="tagRow" id="tagRow"></div>
+            <a class="download" id="downloadLink" download="promotion-film.mp4">Download MP4</a>
+
+            <div class="revision">
+              <div class="sectionTitle">Ask for a change</div>
+              <div class="revisionRow">
+                <input class="revisionInput" id="revisionInput" placeholder="Make the opening more dramatic">
+                <button id="reviseBtn">Apply</button>
+              </div>
+            </div>
+
+            <div class="history">
+              <div class="sectionTitle">Renders</div>
+              <div id="historyList"><div class="sectionNote">Nothing rendered yet.</div></div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
   </div>
-</div>
-
-<script>
-(function(){
-  var state = { duration:20, session:null, project:null, recorder:null, chunks:[] };
-  var $ = function(id){ return document.getElementById(id); };
-  var canvas = $("canvas"), ctx = canvas.getContext("2d");
-  var imgCache = {};
-
-  function setStatus(text,p){ $("statusText").textContent=text; $("progressText").textContent=Math.round(p||0)+"%"; $("bar").style.width=(p||0)+"%"; }
-  function esc(s){ return String(s||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];}); }
-
-  async function loadSession(){
-    var r = await fetch("/api/session"); state.session = await r.json();
-    $("sessionPill").textContent = "Session " + state.session.id.slice(-8);
-    renderFiles(state.session.files||[]); renderHistory(state.session.renders||[]);
-  }
-  function renderFiles(files){
-    $("fileList").innerHTML = files.length ? files.map(function(f){return '<span class="file">'+esc(f.name.replace(/^\d+-[a-f0-9]+-/,""))+"</span>";}).join("") : '<span style="color:#606875;font-size:12px">No files yet</span>';
-  }
-  function renderHistory(items){
-    $("historyList").innerHTML = items.length ? items.map(function(x){return '<div class="render"><div><a href="'+x.url+'" target="_blank">'+esc(x.id)+'</a><br><small>'+new Date(x.createdAt).toLocaleString()+'</small></div><small>'+String(x.format||"video").toUpperCase()+'</small></div>';}).join("") : '<div style="color:#626a78;font-size:13px">Nothing rendered in this session yet.</div>';
-  }
-
-  $("durations").addEventListener("click",function(e){ if(!e.target.dataset.value)return; document.querySelectorAll(".opt").forEach(function(b){b.classList.remove("active")}); e.target.classList.add("active"); state.duration=Number(e.target.dataset.value); });
-  $("files").addEventListener("change", async function(){
-    if(!this.files.length)return;
-    setStatus("Uploading material",6);
-    var fd=new FormData(); Array.from(this.files).forEach(function(f){fd.append("files",f)});
-    var r=await fetch("/api/upload",{method:"POST",body:fd}); if(!r.ok){setStatus("Upload failed",0);return;}
-    await loadSession(); setStatus("Material ready",10); this.value="";
-  });
-
-  function ease(t){ return 1-Math.pow(1-t,3); }
-  function roundRect(x,y,w,h,r){ ctx.beginPath(); ctx.roundRect(x,y,w,h,r); }
-  function fitText(text,maxWidth,startSize,minSize){
-    var size=startSize; while(size>minSize){ctx.font="700 "+size+"px Inter,Arial"; if(ctx.measureText(text).width<=maxWidth)break; size-=2;} return size;
-  }
-  function bg(time){
-    var g=ctx.createRadialGradient(300+Math.sin(time*.0006)*160,100,20,500,330,900);
-    g.addColorStop(0,"#252a35");g.addColorStop(.38,"#12151c");g.addColorStop(1,"#050608");ctx.fillStyle=g;ctx.fillRect(0,0,1280,720);
-    ctx.globalAlpha=.15;ctx.strokeStyle="#788094";ctx.lineWidth=1;
-    for(var x=0;x<1280;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,720);ctx.stroke();}
-    for(var y=0;y<720;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(1280,y);ctx.stroke();}
-    ctx.globalAlpha=1;
-  }
-  async function getImage(url){
-    if(!url)return null;if(imgCache[url])return imgCache[url];
-    return await new Promise(function(resolve){var im=new Image();im.onload=function(){imgCache[url]=im;resolve(im)};im.onerror=function(){resolve(null)};im.src=url;});
-  }
-  function drawCover(im,x,y,w,h,scale,pan){
-    if(!im)return; var ir=im.width/im.height, br=w/h, sw,sh,sx,sy;
-    if(ir>br){sh=im.height;sw=sh*br;sx=(im.width-sw)/2;sy=0;}else{sw=im.width;sh=sw/br;sx=0;sy=(im.height-sh)/2;}
-    var nw=w*scale,nh=h*scale;ctx.drawImage(im,sx,sy,sw,sh,x-(nw-w)/2+pan,y-(nh-h)/2,nw,nh);
-  }
-  async function drawScene(scene,t,globalTime){
-    bg(globalTime);
-    var a=Math.min(1,t/.55), out=Math.min(1,(scene.duration-t)/(scene.duration*.12)); if(!isFinite(out))out=1; var alpha=Math.max(0,Math.min(a,out));
-    ctx.globalAlpha=alpha;
-    if(scene.type==="title"||scene.type==="end"||scene.type==="statement"){
-      ctx.fillStyle="#a9b0bd";ctx.font="600 14px Inter,Arial";ctx.fillText(scene.eyebrow||"PROMOTION",92,180);
-      ctx.fillStyle="#f8f9fb";var fs=fitText(scene.headline||"",1000,70,34);ctx.font="700 "+fs+"px Inter,Arial";
-      var words=(scene.headline||"").split(" "), lines=[], line="";
-      words.forEach(function(w){var test=line?line+" "+w:w;if(ctx.measureText(test).width>1000&&line){lines.push(line);line=w;}else line=test;});if(line)lines.push(line);
-      lines.slice(0,3).forEach(function(l,i){ctx.fillText(l,92,285+i*(fs+10));});
-      if(scene.subline){ctx.fillStyle="#9299a7";ctx.font="400 23px Inter,Arial";ctx.fillText(scene.subline,94,510);}
-      ctx.fillStyle="#f4f6f8";ctx.fillRect(92,575,Math.max(80,220*ease(Math.min(1,t))),3);
-    } else if(scene.type==="image"){
-      var im=await getImage(scene.image);
-      ctx.fillStyle="#a9b0bd";ctx.font="600 14px Inter,Arial";ctx.fillText(scene.eyebrow||"FEATURE",80,82);
-      roundRect(72,110,1136,540,24);ctx.fillStyle="#0a0c11";ctx.fill();ctx.save();roundRect(72,110,1136,540,24);ctx.clip();
-      var p=ease(Math.min(1,t/scene.duration));drawCover(im,72,110,1136,540,1.03+p*.055,-18+p*36);
-      var ov=ctx.createLinearGradient(0,390,0,650);ov.addColorStop(0,"rgba(0,0,0,0)");ov.addColorStop(1,"rgba(0,0,0,.82)");ctx.fillStyle=ov;ctx.fillRect(72,300,1136,350);ctx.restore();
-      ctx.fillStyle="#fff";var s=fitText(scene.headline||"",930,38,24);ctx.font="650 "+s+"px Inter,Arial";ctx.fillText(scene.headline||"",108,590);
-    }
-    ctx.globalAlpha=1;
-  }
-  function sceneAt(project,time){
-    var acc=0;for(var i=0;i<project.scenes.length;i++){var s=project.scenes[i];if(time<acc+s.duration)return {scene:s,local:time-acc};acc+=s.duration;}return {scene:project.scenes[project.scenes.length-1],local:project.scenes[project.scenes.length-1].duration};
-  }
-
-  async function renderProject(project){
-    $("empty").classList.add("hidden");$("video").classList.add("hidden");canvas.classList.remove("hidden");
-    var fps=30,total=project.scenes.reduce(function(a,s){return a+s.duration},0),stream=canvas.captureStream(fps);
-    var mime=["video/webm;codecs=vp9","video/webm;codecs=vp8","video/webm"].find(function(x){return MediaRecorder.isTypeSupported(x)})||"";
-    state.chunks=[];state.recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:7000000}:{videoBitsPerSecond:7000000});
-    state.recorder.ondataavailable=function(e){if(e.data.size)state.chunks.push(e.data)};
-    var done=new Promise(function(resolve){state.recorder.onstop=resolve});state.recorder.start(500);
-    var start=performance.now(),frame=0,maxFrames=Math.ceil(total*fps);
-    while(frame<maxFrames){
-      var time=frame/fps,found=sceneAt(project,time);await drawScene(found.scene,found.local,total?time/total:0);
-      setStatus("Rendering scene "+(project.scenes.indexOf(found.scene)+1)+" of "+project.scenes.length,15+(time/total)*70);
-      frame++; await new Promise(function(r){setTimeout(r,1000/fps)});
-    }
-    state.recorder.stop();await done;
-    setStatus("Encoding MP4",90);
-    var blob=new Blob(state.chunks,{type:"video/webm"}),fd=new FormData();fd.append("video",blob,"render.webm");
-    var rr=await fetch("/api/render",{method:"POST",body:fd});var record=await rr.json();
-    if(!rr.ok)throw new Error(record.error||"Render upload failed");
-    $("video").src=record.url+"?t="+Date.now();$("video").classList.remove("hidden");canvas.classList.add("hidden");$("video").play().catch(function(){});
-    setStatus("Complete",100);await loadSession();
-  }
-
-  $("generate").addEventListener("click",async function(){
-    var prompt=$("prompt").value.trim(); if(!prompt)prompt="Create a premium product launch film from these materials.";
-    this.disabled=true;
-    try{
-      setStatus("Building storyboard",12);
-      var r=await fetch("/api/generate",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({prompt:prompt,duration:state.duration})});
-      state.project=await r.json(); if(!r.ok)throw new Error("Generation failed");
-      await Promise.all(state.project.scenes.filter(function(s){return s.image}).map(function(s){return getImage(s.image)}));
-      await renderProject(state.project);
-    }catch(e){console.error(e);setStatus("Something went wrong",0);alert(e.message||"Generation failed");}
-    this.disabled=false;
-  });
-  loadSession().catch(console.error);
-})();
-</script>
+  <script type="module" src="/app.js"></script>
 </body>
 </html>
