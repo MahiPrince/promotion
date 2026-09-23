@@ -8,10 +8,25 @@ const ffmpegPath = require("ffmpeg-static");
 
 const app = express();
 const PORT = process.env.PORT || 10000;
-const DATA_ROOT = process.env.DATA_ROOT || path.join(__dirname, ".data");
-const SESSION_ROOT = path.join(DATA_ROOT, "sessions");
+let DATA_ROOT = process.env.DATA_ROOT || path.join(__dirname, ".data");
 
-fs.mkdirSync(SESSION_ROOT, { recursive: true });
+function initializeStorage(preferred) {
+  try {
+    fs.mkdirSync(path.join(preferred, "sessions"), { recursive: true });
+    fs.mkdirSync(path.join(preferred, "tmp"), { recursive: true });
+    fs.accessSync(preferred, fs.constants.W_OK);
+    return preferred;
+  } catch (err) {
+    const fallback = path.join("/tmp", "promotion-data");
+    fs.mkdirSync(path.join(fallback, "sessions"), { recursive: true });
+    fs.mkdirSync(path.join(fallback, "tmp"), { recursive: true });
+    console.warn("Preferred DATA_ROOT unavailable; using ephemeral fallback:", fallback);
+    return fallback;
+  }
+}
+
+DATA_ROOT = initializeStorage(DATA_ROOT);
+const SESSION_ROOT = path.join(DATA_ROOT, "sessions");
 
 app.use(express.json({ limit: "4mb" }));
 app.use(express.static(path.join(__dirname, "public")));
